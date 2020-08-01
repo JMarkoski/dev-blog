@@ -42,8 +42,6 @@ var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-st
 var p = new _promise["default"]();
 ```
 
-
-
 As we can see, the imports come from `@babel/runtime-corejs3`. This `babel` package doesn't contain any source code. Instead it only lists `core-js` and `regenerator-runtime` as dependencies. The `@babel/transform-runtime` plugin does some magic and inserts several folders with files in this package in `node_modules`. This is why `@babel/runtime-corejs3/helpers` or `@babel/runtime-corejs3/core-js-stable` folders exist in the first place. Now, the important part is that the files in these folders import things from **`core-js-pure`**. So when you use `@babel/transform-runtime` plugin, it includes polyfills from the `core-js-pure` folder, and doesn't pollute the global environment.
 
 Answer to the question:
@@ -67,8 +65,6 @@ The answer is **NO**. This is not obvious at first. The only case where you will
 ```javascript
 async function f() {}
 ```
-
-
 
 The transpiled code is this:
 
@@ -102,8 +98,6 @@ function _f() {
   return _f.apply(this, arguments);
 }
 ```
-
-
 
 Look at this line here:
 
