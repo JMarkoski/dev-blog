@@ -26,6 +26,8 @@ require("core-js/modules/es.promise");
 var p = new Promise();
 ```
 
+
+
 The `usage` word suggests what `babel` does: If you use code that browsers you targeted with your browser configuration do not support, `babel` will inject polyfills for that code. But the main question is: **from where**? If we inspect the transpiled code, we see that `babel` injects the `Promise` polyfill from `core-js`. Note that you should have `core-js` installed as a dependency in your app. `Babel` injects the polyfills that pollute the global environment with this setup. 
 
 Ok, now let's see what `@babel/transform-runtime` does with the `corejs` option set. If you have the same code above, that is `var p = new Promise()`, `babel` transpiles that to somethings like this:
@@ -39,6 +41,8 @@ var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-st
 
 var p = new _promise["default"]();
 ```
+
+
 
 As we can see, the imports come from `@babel/runtime-corejs3`. This `babel` package doesn't contain any source code. Instead it only lists `core-js` and `regenerator-runtime` as dependencies. The `@babel/transform-runtime` plugin does some magic and inserts several folders with files in this package in `node_modules`. This is why `@babel/runtime-corejs3/helpers` or `@babel/runtime-corejs3/core-js-stable` folders exist in the first place. Now, the important part is that the files in these folders import things from **`core-js-pure`**. So when you use `@babel/transform-runtime` plugin, it includes polyfills from the `core-js-pure` folder, and doesn't pollute the global environment.
 
@@ -63,6 +67,8 @@ The answer is **NO**. This is not obvious at first. The only case where you will
 ```javascript
 async function f() {}
 ```
+
+
 
 The transpiled code is this:
 
@@ -96,6 +102,8 @@ function _f() {
   return _f.apply(this, arguments);
 }
 ```
+
+
 
 Look at this line here:
 
